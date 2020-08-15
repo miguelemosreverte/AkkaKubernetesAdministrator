@@ -12,8 +12,20 @@ sdkman_auto_answer=true
 sdk install sbt 
 sdk install java
 
+
+pip install awscli
+curl https://get.docker.com/ | sh
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 099925565557.dkr.ecr.us-west-2.amazonaws.com
+service docker start
+
 git clone https://miguelemosreverte:Alatriste007@github.com/miguelemosreverte/PCS
 cd PCS 
 sbt compile 
 
 # sbt it/'runMain generator.KafkaEventProducer 1 1000 DGR-COP-SUJETO-TRI'
+
+sbt pcs/docker:publishLocal
+docker tag pcs/pcs:1.0 099925565557.dkr.ecr.us-west-2.amazonaws.com/pcs-akka:latest
+docker push 099925565557.dkr.ecr.us-west-2.amazonaws.com/pcs-akka:latest
+
+
